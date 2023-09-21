@@ -5,9 +5,11 @@ import Toybox.System;
 import Toybox.WatchUi;
 
 class manchestercitywfView extends WatchUi.WatchFace {
-
+	var logo;
+	
     function initialize() {
         WatchFace.initialize();
+        logo = WatchUi.loadResource(Rez.Drawables.Logo);
     }
 
     // Load your resources here
@@ -39,13 +41,20 @@ class manchestercitywfView extends WatchUi.WatchFace {
         }
         var timeString = Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]);
 
-        // Update the view
-        var view = View.findDrawableById("TimeLabel") as Text;
-        view.setColor(getApp().getProperty("ForegroundColor") as Number);
-        view.setText(timeString);
-
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
+        
+		var widthScreen = dc.getWidth();
+		var heightScreen = dc.getHeight();
+  		var widthCenter = widthScreen / 2;
+  		
+        // Logo
+        var positionLogoX = (widthScreen / 2) -70;
+        var positionLogoY = (heightScreen / 2) - 70;
+        dc.drawBitmap(positionLogoX, positionLogoY, logo);
+        
+       	dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(widthCenter, (heightScreen / 8) * 6.5, Graphics.FONT_LARGE, timeString, Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     // Called when this View is removed from the screen. Save the
